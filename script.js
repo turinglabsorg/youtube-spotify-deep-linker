@@ -14,26 +14,37 @@ function redirectToApp() {
     const service = getParameterByName("service");
     const originalLink = getParameterByName("link");
     if (service !== undefined && originalLink !== undefined && service !== null && originalLink !== null) {
-        if (/android/i.test(userAgent)) {
-            // Android URLs
-            if (service === "youtube") {
-                window.location = "vnd.youtube://" + originalLink;
-            } else if (service === "spotify") {
-                window.location = "https://open.spotify.com/track/" + originalLink + "?context=spotify:playlist:0TbbXnfX6Rtour71ojHhNl&si=75dc896f08184bd1";
+        try {
+            if (/android/i.test(userAgent)) {
+                // Android URLs
+                if (service === "youtube") {
+                    window.location = "vnd.youtube://" + originalLink;
+                } else if (service === "spotify") {
+                    window.location = "https://open.spotify.com/track/" + originalLink + "?context=spotify:playlist:0TbbXnfX6Rtour71ojHhNl&si=75dc896f08184bd1";
+                }
+            } else if (/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream) {
+                // iOS URLs
+                if (service === "youtube") {
+                    window.location = "youtube://" + originalLink;
+                } else if (service === "spotify") {
+                    window.location = "spotify://track/" + originalLink + "?context=spotify:playlist:0TbbXnfX6Rtour71ojHhNl&si=75dc896f08184bd1";
+                }
+            } else {
+                if (service === "youtube") {
+                    window.location = "https://youtube.com/watch?v=" + originalLink;
+                } else if (service === "spotify") {
+                    window.location = "https://open.spotify.com/track/" + originalLink + "?context=spotify:playlist:0TbbXnfX6Rtour71ojHhNl&si=75dc896f08184bd1";
+                }
             }
-        } else if (/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream) {
-            // iOS URLs
-            if (service === "youtube") {
-                window.location = "youtube://" + originalLink;
-            } else if (service === "spotify") {
-                window.location = "spotify://track/" + originalLink + "?context=spotify:playlist:0TbbXnfX6Rtour71ojHhNl&si=75dc896f08184bd1";
-            }
-        } else {
-            if (service === "youtube") {
-                window.location = "https://youtube.com/watch?v=" + originalLink;
-            } else if (service === "spotify") {
-                window.location = "https://open.spotify.com/track/" + originalLink + "?context=spotify:playlist:0TbbXnfX6Rtour71ojHhNl&si=75dc896f08184bd1";
-            }
+        } catch (e) {
+            console.log(e.message)
+            setTimeout(function () {
+                if (service === "youtube") {
+                    window.location = "https://youtube.com/watch?v=" + originalLink;
+                } else if (service === "spotify") {
+                    window.location = "https://open.spotify.com/track/" + originalLink + "?context=spotify:playlist:0TbbXnfX6Rtour71ojHhNl&si=75dc896f08184bd1";
+                }
+            }, 2500)
         }
     }
 }
