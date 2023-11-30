@@ -26,7 +26,7 @@ function redirectToApp() {
             if (service === "youtube") {
                 window.location = "youtube://" + originalLink;
             } else if (service === "spotify") {
-                window.location = "https://open.spotify.com/track/" + originalLink + "?context=spotify:playlist:0TbbXnfX6Rtour71ojHhNl&si=75dc896f08184bd1";
+                window.location = "spotify://track/" + originalLink + "?context=spotify:playlist:0TbbXnfX6Rtour71ojHhNl&si=75dc896f08184bd1";
             }
         } else {
             if (service === "youtube") {
